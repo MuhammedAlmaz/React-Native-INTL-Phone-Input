@@ -1,7 +1,7 @@
 # React-Native-INTL-Phone-Input
 It's a international phone input with phone mask. 
 
-![](mgifs.gif)
+![](mgif.gif)
 
 
 # USAGE
