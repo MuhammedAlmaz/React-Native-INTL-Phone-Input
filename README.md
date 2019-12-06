@@ -18,7 +18,16 @@ import IntlPhoneInput from 'react-native-intl-phone-input';
 ```
 use component
 ```
-<IntlPhoneInput defaultCountry="TR"/>
+  onChangeText = ({dialCode, unmaskedPhoneNumber, phoneNumber, isVerified}) => {
+    console.log(dialCode, unmaskedPhoneNumber, phoneNumber, isVerified);
+  };
+  render() {
+    return (
+      <SafeAreaView>
+        <PhoneInput onChangeText={this.onChangeText} defaultCountry="TR" />
+      </SafeAreaView>
+    );
+  }
 ```
 prop names |type |default value | comment 
 --- | --- | --- | --- 
