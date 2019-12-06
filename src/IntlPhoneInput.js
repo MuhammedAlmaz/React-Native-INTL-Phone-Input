@@ -10,14 +10,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { Icon } from 'native-base';
 import PropTypes from 'prop-types';
 import data from './Countries';
 
-export default class PhoneInput extends React.Component {
+export default class IntlPhoneInput extends React.Component {
   constructor(props) {
     super(props);
-    const defaultCountry = data.filter((obj) => obj.code === 'TR')[0];
+    const defaultCountry =
+        data.filter((obj) => obj.code === props.defaultCountry)[0] || data.filter((obj) => obj.code === "TR")[0];
     this.state = {
       defaultCountry,
       flag: defaultCountry.flag,
@@ -114,60 +114,59 @@ export default class PhoneInput extends React.Component {
       modalCountryItemCountryDialCodeStyle,
       closeText,
       filterText,
+      searchIconStyle,
       closeButtonStyle
     } = this.props;
     return (
+        <View style={{ ...styles.container, ...containerStyle }}>
+          <TouchableOpacity onPress={() => this.showModal()}>
+            <View style={styles.openDialogView}>
+              <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
+              <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
+            </View>
+          </TouchableOpacity>
 
-      <View style={{ ...styles.container, ...containerStyle }}>
-        <TouchableOpacity onPress={() => this.showModal()}>
-          <View style={styles.openDialogView}>
-            <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
-            <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
-            <Icon active name="md-arrow-dropdown" style={[styles.iconStyle, { marginLeft: 5 }]} onPress={() => this.showModal()} />
-          </View>
-        </TouchableOpacity>
-
-        <TextInput
-          style={[styles.phoneInputStyle, phoneInputStyle]}
-          placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
-          autoCorrect={false}
-          keyboardType="number-pad"
-          secureTextEntry={false}
-          value={this.state.phoneNumber}
-          onChangeText={this.onChangeText}
-        />
-        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
-          <SafeAreaView style={{ flex: 1 }}>
-            <View style={[styles.modalContainer, modalContainer]}>
-              <View style={styles.filterInputStyleContainer}>
-                <TextInput autoCompleteType={false} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
-                <Icon style={styles.searchIcon} name="ios-search" color="#000" />
-              </View>
-              <FlatList
-                style={{ flex: 1 }}
-                data={this.state.countryData}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={
+          <TextInput
+              style={[styles.phoneInputStyle, phoneInputStyle]}
+              placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
+              autoCorrect={false}
+              keyboardType="number-pad"
+              secureTextEntry={false}
+              value={this.state.phoneNumber}
+              onChangeText={this.onChangeText}
+          />
+          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+            <SafeAreaView style={{ flex: 1 }}>
+              <View style={[styles.modalContainer, modalContainer]}>
+                <View style={styles.filterInputStyleContainer}>
+                  <TextInput autoCompleteType={false} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
+                  <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
+                </View>
+                <FlatList
+                    style={{ flex: 1 }}
+                    data={this.state.countryData}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={
                       ({ item }) => (
-                        <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.name)}>
-                          <View style={[styles.countryModalStyle, countryModalStyle]}>
-                            <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag}</Text>
-                            <View style={styles.modalCountryItemContainer}>
-                              <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item.name}</Text>
-                              <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{`  ${item.dialCode}`}</Text>
+                          <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.name)}>
+                            <View style={[styles.countryModalStyle, countryModalStyle]}>
+                              <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag}</Text>
+                              <View style={styles.modalCountryItemContainer}>
+                                <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item.name}</Text>
+                                <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{`  ${item.dialCode}`}</Text>
+                              </View>
                             </View>
-                          </View>
-                        </TouchableWithoutFeedback>
+                          </TouchableWithoutFeedback>
                       )
                     }
-              />
-            </View>
-            <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
-              <Text style={styles.closeTextStyle}>{closeText || 'CLOSE'}</Text>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </Modal>
-      </View>
+                />
+              </View>
+              <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
+                <Text style={styles.closeTextStyle}>{closeText || 'CLOSE'}</Text>
+              </TouchableOpacity>
+            </SafeAreaView>
+          </Modal>
+        </View>
 
 
     );
@@ -175,6 +174,7 @@ export default class PhoneInput extends React.Component {
 }
 
 PhoneInput.propTypes = {
+  defaultCountry: PropTypes.string,
   onChangeText: PropTypes.func,
   containerStyle: PropTypes.object, // {}
   dialCodeTextStyle: PropTypes.object, // {}
@@ -185,6 +185,7 @@ PhoneInput.propTypes = {
   modalCountryItemCountryNameStyle: PropTypes.object, // {}
   filterText: PropTypes.string,
   closeText: PropTypes.string,
+  searchIconStyle: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
-  iconStyle: {
+  searchIconStyle: {
     color: 'black',
     fontSize: 15,
     marginLeft: 15
