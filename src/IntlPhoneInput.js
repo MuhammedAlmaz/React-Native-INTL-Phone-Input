@@ -173,7 +173,7 @@ export default class IntlPhoneInput extends React.Component {
   }
 }
 
-PhoneInput.propTypes = {
+IntlPhoneInput.propTypes = {
   defaultCountry: PropTypes.string,
   onChangeText: PropTypes.func,
   containerStyle: PropTypes.object, // {}
