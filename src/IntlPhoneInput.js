@@ -41,7 +41,7 @@ export default class IntlPhoneInput extends React.Component {
   }
 
   onChangeText = (value) => {
-    const unmaskedPhoneNumber = (value.match(/\d+/g) || []).join('');
+    let unmaskedPhoneNumber = (value.match(/\d+/g) || []).join('');
 
     if (unmaskedPhoneNumber.length === 0) {
       this.setState({ phoneNumber: '' });
@@ -62,11 +62,12 @@ export default class IntlPhoneInput extends React.Component {
       }
     }
     phoneNumber = phoneNumber.slice(0, numberPointer + 1);
-
+    unmaskedPhoneNumber = phoneNumber.match(/9/g).length;
 
     this.onChangePropText(unmaskedPhoneNumber, phoneNumber);
     this.setState({ phoneNumber });
   }
+
 
   showModal = () => this.setState({ modalVisible: true });
 
@@ -176,6 +177,7 @@ export default class IntlPhoneInput extends React.Component {
 IntlPhoneInput.propTypes = {
   defaultCountry: PropTypes.string,
   onChangeText: PropTypes.func,
+  phoneInputStyle: PropTypes.object, // {}
   containerStyle: PropTypes.object, // {}
   dialCodeTextStyle: PropTypes.object, // {}
   flagStyle: PropTypes.object, // {}
@@ -221,7 +223,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
   },
   dialCodeTextStyle: {
-    fontSize: 20
   },
   countryModalStyle: {
     flex: 1,
@@ -253,7 +254,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   phoneInputStyle: {
-    fontSize: 20,
     marginLeft: 5,
     flex: 1
   },
