@@ -24,7 +24,7 @@ use component
   render() {
     return (
       <SafeAreaView>
-        <PhoneInput onChangeText={this.onChangeText} defaultCountry="TR" />
+        <IntlPhoneInput onChangeText={this.onChangeText} defaultCountry="TR" />
       </SafeAreaView>
     );
   }
