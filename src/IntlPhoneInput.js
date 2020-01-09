@@ -116,7 +116,8 @@ export default class IntlPhoneInput extends React.Component {
       closeText,
       filterText,
       searchIconStyle,
-      closeButtonStyle
+      closeButtonStyle,
+      inputProps
     } = this.props;
     return (
         <View style={{ ...styles.container, ...containerStyle }}>
@@ -128,6 +129,7 @@ export default class IntlPhoneInput extends React.Component {
           </TouchableOpacity>
 
           <TextInput
+              {...inputProps}
               style={[styles.phoneInputStyle, phoneInputStyle]}
               placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
               autoCorrect={false}
