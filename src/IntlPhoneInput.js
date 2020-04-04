@@ -142,7 +142,7 @@ export default class IntlPhoneInput extends React.Component {
             <SafeAreaView style={{ flex: 1 }}>
               <View style={[styles.modalContainer, modalContainer]}>
                 <View style={styles.filterInputStyleContainer}>
-                  <TextInput autoCompleteType={false} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
+                  <TextInput autoCompleteType={'off'} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
                   <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
                 </View>
                 <FlatList
