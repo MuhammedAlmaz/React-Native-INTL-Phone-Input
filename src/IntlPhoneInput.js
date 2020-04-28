@@ -69,7 +69,7 @@ export default class IntlPhoneInput extends React.Component {
   }
 
 
-  showModal = () => this.props.disableCountryChange?this.setState({ modalVisible: true }):null;
+  showModal = () => this.props.disableCountryChange?null:this.setState({ modalVisible: true });
 
   hideModal = () => this.setState({ modalVisible: false });
 
