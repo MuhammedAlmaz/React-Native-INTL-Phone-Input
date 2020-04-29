@@ -33,6 +33,7 @@ prop names |type |default value | comment
 --- | --- | --- | --- 
 placeholder | String |  | This prop change the phone input placeholder
 defaultCountry | String | TR | You can change your default country code 
+defaultPhoneNumber | String |  | You can set a default phone number
 phoneInputStyle | Style |  | This prop is about the text field's ReactNative.TextInput style 
 onChangeText | Function |  | This function works when input text is changed 
 containerStyle | Style |  | This prop is about the text field's container style 
