@@ -1523,7 +1523,7 @@ const Countries = [
     flag: '🇹🇷',
     code: 'TR',
     dialCode: '+90',
-    mask: '(999) 999 99-99'
+    mask: '(999) 999 9999'
   },
   {
     name: 'Turkmenistan',
