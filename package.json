@@ -1,30 +1,68 @@
 {
-  "name": "reactNativePhoneInput",
-  "version": "0.0.1",
-  "private": true,
+  "_from": "react-native-intl-phone-input@^1.2.12",
+  "_id": "react-native-intl-phone-input@1.2.12",
+  "_inBundle": false,
+  "_integrity": "sha512-+IZRv7TqbG2iCmcyDZsD/AW3rn3T2czp3r3IIFF7qcsPxEezBo88iTJmtouWpcEVIGNEZBmrOeb97HYQEB7Dkw==",
+  "_location": "/react-native-intl-phone-input",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "react-native-intl-phone-input@^1.2.12",
+    "name": "react-native-intl-phone-input",
+    "escapedName": "react-native-intl-phone-input",
+    "rawSpec": "^1.2.12",
+    "saveSpec": null,
+    "fetchSpec": "^1.2.12"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-intl-phone-input/-/react-native-intl-phone-input-1.2.12.tgz",
+  "_shasum": "78a921724ce61784ecba5add33e2f5c8109378d1",
+  "_spec": "react-native-intl-phone-input@^1.2.12",
+  "_where": "/Users/rostyslavbroslavskyi/Documents/projects/cloudbreak",
+  "author": {
+    "name": "Muhammed ALMAZ"
+  },
+  "bugs": {
+    "url": "https://github.com/MuhammedAlmaz/React-Native-INTL-Phone-Input/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "It is an international phone component.",
+  "homepage": "https://github.com/Roka20012/React-Native-INTL-Phone-Input#readme",
+  "keywords": [
+    "react-native",
+    "react-component",
+    "react-native-component",
+    "react",
+    "react native",
+    "mobile",
+    "ios",
+    "android",
+    "intl",
+    "international",
+    "phone",
+    "input",
+    "component",
+    "mask",
+    "masked"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "react-native-intl-phone-input",
+  "peerDependencies": {
+    "react-native": ">= 0.25"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roka20012/React-Native-INTL-Phone-Input.git"
+  },
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "native-base": "^2.13.8",
-    "react": "16.9.0",
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.3.0",
-    "eslint-config-airbnb": "^18.0.1",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.3",
-    "jest-expo": "^34.0.0",
-    "jetifier": "^1.6.4",
-    "react-native": "^0.61.4"
-  },
-  "jest": {
-    "preset": "react-native"
-  }
+  "version": "1.2.12"
 }
