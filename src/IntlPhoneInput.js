@@ -4,13 +4,18 @@ import {
   Text,
   Modal,
   FlatList,
+  Image,
+  Platform,
   StyleSheet,
   SafeAreaView,
-  TouchableWithoutFeedback,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
+import CloseIconIOS from './close.ios.png';
+import CloseIconAndroid from './close.android.png';
+
 import data from './Countries';
 
 export default class IntlPhoneInput extends React.Component {
@@ -18,22 +23,31 @@ export default class IntlPhoneInput extends React.Component {
     super(props);
     const defaultCountry =
         data.filter((obj) => obj.code === props.defaultCountry)[0] || data.filter((obj) => obj.code === "TR")[0];
+    const defaultPhoneNumber =
+      props.phoneNumber
+        ? props.phoneNumber.includes('+')
+          ? props.phoneNumber.substring(defaultCountry.dialCode.length)
+          : props.phoneNumber
+        : ''
     this.state = {
       defaultCountry,
       flag: defaultCountry.flag,
       modalVisible: false,
       dialCode: defaultCountry.dialCode,
-      phoneNumber: '',
+      phoneNumber: defaultPhoneNumber || '',
       mask: defaultCountry.mask,
       countryData: data
     };
+    if (defaultPhoneNumber) {
+      this.handleChangeText(defaultPhoneNumber)
+    }
   }
 
   onChangePropText=(unmaskedPhoneNumber, phoneNumber) => {
     const { dialCode, mask } = this.state;
     const countOfNumber = mask.match(/9/g).length;
     if (this.props.onChangeText) {
-      const isVerified = countOfNumber === unmaskedPhoneNumber.length && phoneNumber.length > 0;
+      const isVerified = countOfNumber === unmaskedPhoneNumber?.length && phoneNumber?.length > 0;
       this.props.onChangeText({
         dialCode, unmaskedPhoneNumber, phoneNumber, isVerified
       });
@@ -62,7 +76,7 @@ export default class IntlPhoneInput extends React.Component {
       }
     }
     phoneNumber = phoneNumber.slice(0, numberPointer + 1);
-    unmaskedPhoneNumber = phoneNumber.match(/9/g).length;
+    unmaskedPhoneNumber = (phoneNumber.match(/\d+/g) || []).join('');
 
     this.onChangePropText(unmaskedPhoneNumber, phoneNumber);
     this.setState({ phoneNumber });
@@ -100,6 +114,11 @@ export default class IntlPhoneInput extends React.Component {
     this.setState({ countryData });
   }
 
+  setDefaultCountries = () => {
+    this.setState({countryData: data});
+    this.showModal();
+  }
+
   render() {
     const { flag } = this.state;
     const {
@@ -119,15 +138,15 @@ export default class IntlPhoneInput extends React.Component {
       closeButtonStyle,
       inputProps
     } = this.props;
+
     return (
         <View style={{ ...styles.container, ...containerStyle }}>
-          <TouchableOpacity onPress={() => this.showModal()}>
+          <TouchableOpacity onPress={this.setDefaultCountries}>
             <View style={styles.openDialogView}>
               <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
               <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
             </View>
           </TouchableOpacity>
-
           <TextInput
               {...inputProps}
               style={[styles.phoneInputStyle, phoneInputStyle]}
@@ -141,37 +160,35 @@ export default class IntlPhoneInput extends React.Component {
           <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
             <SafeAreaView style={{ flex: 1 }}>
               <View style={[styles.modalContainer, modalContainer]}>
-                <View style={styles.filterInputStyleContainer}>
-                  <TextInput autoCompleteType={'off'} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
-                  <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
-                </View>
                 <FlatList
                     style={{ flex: 1 }}
                     data={this.state.countryData}
                     keyExtractor={(item, index) => index.toString()}
+                    ListHeaderComponent={ <View style={styles.filterInputStyleContainer}>
+                    <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
+                    <Image style={styles.closeIconStyle} source={Platform.select({ ios: CloseIconIOS, android: CloseIconAndroid})} />
+              </TouchableOpacity>
+                  <TextInput autoFocus={false} autoCompleteType={'off'} autoCorrect={false} onChangeText={this.filterCountries} placeholder={filterText || 'Enter country name'} style={[styles.filterInputStyle, filterInputStyle]} />
+                </View>}
                     renderItem={
-                      ({ item }) => (
-                          <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.name)}>
-                            <View style={[styles.countryModalStyle, countryModalStyle]}>
+                      ({ item, index }) => (
+                            <View style={index !== data.length - 1 && styles.countryModalSeparatorStyle}>
+                          <TouchableOpacity style={[styles.countryModalStyle, countryModalStyle]}  onPress={() => this.onCountryChange(item.name)}>
                               <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag}</Text>
                               <View style={styles.modalCountryItemContainer}>
                                 <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item.name}</Text>
                                 <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{`  ${item.dialCode}`}</Text>
                               </View>
+                          </TouchableOpacity>
                             </View>
-                          </TouchableWithoutFeedback>
                       )
                     }
+                    stickyHeaderIndices={[0]}
                 />
               </View>
-              <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
-                <Text style={styles.closeTextStyle}>{closeText || 'CLOSE'}</Text>
-              </TouchableOpacity>
             </SafeAreaView>
           </Modal>
         </View>
-
-
     );
   }
 }
@@ -190,6 +207,7 @@ IntlPhoneInput.propTypes = {
   filterText: PropTypes.string,
   closeText: PropTypes.string,
   searchIconStyle: PropTypes.object,
+  disableCountryChange:PropTypes.func
 };
 
 const styles = StyleSheet.create({
@@ -212,13 +230,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   modalFlagStyle: {
-    fontSize: 25,
+    fontSize: 30,
   },
   modalContainer: {
     paddingTop: 15,
-    paddingLeft: 25,
-    paddingRight: 25,
-    flex: 10,
+    flex: 1,
     backgroundColor: 'white'
   },
   flagStyle: {
@@ -228,16 +244,22 @@ const styles = StyleSheet.create({
   },
   countryModalStyle: {
     flex: 1,
-    borderColor: 'black',
-    borderTopWidth: 1,
-    padding: 12,
+    padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
+  countryModalSeparatorStyle: {
+    borderColor: '#eee',
+    borderBottomWidth: 1,
+  },
   openDialogView: {
+    flex: 1,
+    paddingHorizontal: 10,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
   },
   filterInputStyle: {
     flex: 1,
@@ -250,22 +272,27 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   filterInputStyleContainer: {
-    width: '100%',
+    alignSelf: 'flex-start',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   phoneInputStyle: {
+    height: '100%',
+    paddingTop: 15,
+    paddingBottom: 16,
+    paddingHorizontal: 20,
     marginLeft: 5,
-    flex: 1
+    flex: 1,
+    flexDirection: 'row',
+    borderRadius: 10,
+    backgroundColor: 'white',
   },
   container: {
     flexDirection: 'row',
-    paddingHorizontal: 12,
-    padding: 5,
     borderRadius: 10,
     alignItems: 'center',
-    backgroundColor: 'white',
   },
   searchIconStyle: {
     color: 'black',
@@ -292,5 +319,10 @@ const styles = StyleSheet.create({
   closeButtonStyle: {
     padding: 12,
     alignItems: 'center',
+  },
+  closeIconStyle: {
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
   }
 });
