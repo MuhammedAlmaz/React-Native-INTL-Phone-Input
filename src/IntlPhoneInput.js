@@ -23,15 +23,24 @@ export default class IntlPhoneInput extends React.Component {
     super(props);
     const defaultCountry =
         data.filter((obj) => obj.code === props.defaultCountry)[0] || data.filter((obj) => obj.code === "TR")[0];
+    const defaultPhoneNumber =
+      props.phoneNumber
+        ? props.phoneNumber.includes('+')
+          ? props.phoneNumber.substring(defaultCountry.dialCode.length)
+          : props.phoneNumber
+        : ''
     this.state = {
       defaultCountry,
       flag: defaultCountry.flag,
       modalVisible: false,
       dialCode: defaultCountry.dialCode,
-      phoneNumber: '',
+      phoneNumber: defaultPhoneNumber || '',
       mask: defaultCountry.mask,
       countryData: data
     };
+    if (defaultPhoneNumber) {
+      this.handleChangeText(defaultPhoneNumber)
+    }
   }
 
   onChangePropText=(unmaskedPhoneNumber, phoneNumber) => {
