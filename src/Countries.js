@@ -259,13 +259,6 @@ const Countries = [
     mask: '9 99 99 99 99'
   },
   {
-    name: 'Canada',
-    flag: '🇨🇦',
-    code: 'CA',
-    dialCode: '+1',
-    mask: '(999) 999-9999'
-  },
-  {
     name: 'Cape Verde',
     flag: '🇨🇻',
     code: 'CV',
@@ -1578,6 +1571,13 @@ const Countries = [
     name: 'United States',
     flag: '🇺🇸',
     code: 'US',
+    dialCode: '+1',
+    mask: '(999) 999-9999'
+  },
+  {
+    name: 'Canada',
+    flag: '🇨🇦',
+    code: 'CA',
     dialCode: '+1',
     mask: '(999) 999-9999'
   },
