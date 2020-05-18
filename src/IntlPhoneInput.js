@@ -18,11 +18,11 @@ import CloseIconAndroid from './close.android.png';
 
 import data from './Countries';
 
-export default class IntlPhoneInput extends React.Component {
+class IntlPhoneInput extends React.Component {
   constructor(props) {
     super(props);
     const defaultCountry =
-         data.filter((obj) =>  props.phoneNumber.includes(obj.dialCode))[0] || data.filter((obj) => obj.code === props.defaultCountry)[0];
+         data.filter((obj) =>  props.phoneNumber.includes(obj.dialCode))[0] || data.filter((obj) => obj.code === props.defaultCountry)[0] || data.filter((obj) => obj.code === 'US')[0];
     const defaultPhoneNumber =
       props.phoneNumber
         ? props.phoneNumber.includes('+')
@@ -140,7 +140,8 @@ export default class IntlPhoneInput extends React.Component {
       filterText,
       searchIconStyle,
       closeButtonStyle,
-      inputProps
+      inputRef,
+      ...inputProps
     } = this.props;
 
     return (
@@ -153,8 +154,9 @@ export default class IntlPhoneInput extends React.Component {
           </TouchableOpacity>
           <TextInput
               {...inputProps}
+              ref={inputRef}
               style={[styles.phoneInputStyle, phoneInputStyle]}
-              placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
+              placeholder={' ' + (this.props.placeholder || this.state.mask.replace(/9/g, '_'))}
               autoCorrect={false}
               keyboardType="number-pad"
               secureTextEntry={false}
@@ -166,13 +168,14 @@ export default class IntlPhoneInput extends React.Component {
               <View style={[styles.modalContainer, modalContainer]}>
                 <FlatList
                     style={{ flex: 1 }}
+                    keyboardShouldPersistTaps="always"
                     data={this.state.countryData}
                     keyExtractor={(item, index) => index.toString()}
                     ListHeaderComponent={ <View style={styles.filterInputStyleContainer}>
                     <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
                     <Image style={styles.closeIconStyle} source={Platform.select({ ios: CloseIconIOS, android: CloseIconAndroid})} />
               </TouchableOpacity>
-                  <TextInput autoFocus={false} autoCompleteType={'off'} autoCorrect={false} onChangeText={this.filterCountries} placeholder={filterText || 'Enter country name'} style={[styles.filterInputStyle, filterInputStyle]} />
+                  <TextInput autoFocus autoCompleteType={'off'} autoCorrect={false} onChangeText={this.filterCountries} placeholder={filterText || 'Enter country name'} style={[styles.filterInputStyle, filterInputStyle]} />
                 </View>}
                     renderItem={
                       ({ item, index }) => (
@@ -330,3 +333,5 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   }
 });
+
+export default IntlPhoneInput;
