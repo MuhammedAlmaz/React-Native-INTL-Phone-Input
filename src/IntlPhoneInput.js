@@ -88,7 +88,7 @@ class IntlPhoneInput extends React.Component {
   };
 
   focus() {
-    this.props.inputRef.curent.focus();
+    this.props.inputRef.current.focus();
   }
 
   showModal = () =>
@@ -96,7 +96,10 @@ class IntlPhoneInput extends React.Component {
       ? null
       : this.setState({ modalVisible: true });
 
-  hideModal = () => this.setState({ modalVisible: false });
+  hideModal = () => {
+    this.setState({ modalVisible: false });
+    this.focus();
+  };
 
   onCountryChange = async (countryName) => {
     const countryData = await data;
@@ -276,7 +279,7 @@ IntlPhoneInput.propTypes = {
   closeText: PropTypes.string,
   searchIconStyle: PropTypes.object,
   disableCountryChange: PropTypes.func,
-  inputRef: PropTypes.forwardRef,
+  inputRef: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
