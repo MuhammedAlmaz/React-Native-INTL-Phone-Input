@@ -88,7 +88,7 @@ class IntlPhoneInput extends React.Component {
   };
 
   focus() {
-    this.inputRef.curent.focus();
+    this.props.inputRef.curent.focus();
   }
 
   showModal = () =>
@@ -171,7 +171,7 @@ class IntlPhoneInput extends React.Component {
         </TouchableOpacity>
         <TextInput
           {...inputProps}
-          ref={inputRef}
+          ref={this.props.inputRef}
           style={[styles.phoneInputStyle, phoneInputStyle]}
           placeholder={
             " " + (this.props.placeholder || this.state.mask.replace(/9/g, "_"))
@@ -276,6 +276,7 @@ IntlPhoneInput.propTypes = {
   closeText: PropTypes.string,
   searchIconStyle: PropTypes.object,
   disableCountryChange: PropTypes.func,
+  inputRef: PropTypes.forwardRef,
 };
 
 const styles = StyleSheet.create({
@@ -394,4 +395,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IntlPhoneInput;
+export default React.forwardRef((props, ref) => (
+  <IntlPhoneInput inputRef={ref} {...props} />
+));
