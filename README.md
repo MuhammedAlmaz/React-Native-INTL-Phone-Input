@@ -74,11 +74,11 @@ Custom Modal Example
 
 
 Supported Languages
---- |
-TR | Turkish
-LT | Lithuanian
-EN | English
-RU | Russian
+--- | --- |
+TR | Turkish |
+LT | Lithuanian |
+EN | English |
+RU | Russian |
 
 
 
