@@ -4,43 +4,28 @@ import {
   Text,
   Modal,
   FlatList,
-  Image,
-  Platform,
   StyleSheet,
   SafeAreaView,
+  TouchableWithoutFeedback,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
-
-import CloseIconIOS from './close.ios.png';
-import CloseIconAndroid from './close.android.png';
-
 import data from './Countries';
 
 export default class IntlPhoneInput extends React.Component {
   constructor(props) {
     super(props);
-    const defaultCountry =
-        data.filter((obj) => obj.code === props.defaultCountry)[0] || data.filter((obj) => obj.code === "TR")[0];
-    const defaultPhoneNumber =
-      props.phoneNumber
-        ? props.phoneNumber.includes('+')
-          ? props.phoneNumber.substring(defaultCountry.dialCode.length)
-          : props.phoneNumber
-        : ''
+    const defaultCountry = data.filter((obj) => obj.code === props.defaultCountry)[0] || data.filter((obj) => obj.code === 'TR')[0];
     this.state = {
       defaultCountry,
       flag: defaultCountry.flag,
       modalVisible: false,
       dialCode: defaultCountry.dialCode,
-      phoneNumber: defaultPhoneNumber || '',
+      phoneNumber: '',
       mask: defaultCountry.mask,
       countryData: data
     };
-    if (defaultPhoneNumber) {
-      this.handleChangeText(defaultPhoneNumber)
-    }
   }
 
   onChangePropText=(unmaskedPhoneNumber, phoneNumber) => {
@@ -83,14 +68,14 @@ export default class IntlPhoneInput extends React.Component {
   }
 
 
-  showModal = () => this.props.disableCountryChange?null:this.setState({ modalVisible: true });
+  showModal = () => (this.props.disableCountryChange ? null : this.setState({ modalVisible: true }));
 
   hideModal = () => this.setState({ modalVisible: false });
 
-  onCountryChange = async (countryName) => {
+  onCountryChange = async (code) => {
     const countryData = await data;
     try {
-      const country = await countryData.filter((obj) => obj.name === countryName)[0];
+      const country = await countryData.filter((obj) => obj.code === code)[0];
       this.setState({
         dialCode: country.dialCode,
         flag: country.flag,
@@ -114,18 +99,13 @@ export default class IntlPhoneInput extends React.Component {
     this.setState({ countryData });
   }
 
-  setDefaultCountries = () => {
-    this.setState({countryData: data});
-    this.showModal();
+  focus() {
+    this.props.inputRef.current.focus();
   }
 
-  render() {
-    const { flag } = this.state;
+  renderModal=() => {
+    if (this.props.customModal) return this.props.customModal(this.state.modalVisible,this.state.countryData,this.onCountryChange);
     const {
-      containerStyle,
-      flagStyle,
-      phoneInputStyle,
-      dialCodeTextStyle,
       countryModalStyle,
       modalContainer,
       modalFlagStyle,
@@ -136,66 +116,85 @@ export default class IntlPhoneInput extends React.Component {
       filterText,
       searchIconStyle,
       closeButtonStyle,
+      lang
+    } = this.props;
+    
+    return (
+      <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+        <SafeAreaView style={{ flex: 1 }}>
+        <View style={[styles.modalContainer, modalContainer]}>
+          <View style={styles.filterInputStyleContainer}>
+            <TextInput autoFocus autoCompleteType={false} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
+            <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
+          </View>
+          <FlatList
+            style={{ flex: 1 }}
+            data={this.state.countryData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={
+          ({ item }) => (
+            <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.code)}>
+              <View style={[styles.countryModalStyle, countryModalStyle]}>
+                <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag}</Text>
+                <View style={styles.modalCountryItemContainer}>
+                  <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item[lang?.toLowerCase()??"en"]}</Text>
+                  <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{`  ${item.dialCode}`}</Text>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          )
+        }
+          />
+        </View>
+        <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
+          <Text style={styles.closeTextStyle}>{closeText || 'CLOSE'}</Text>
+        </TouchableOpacity>
+        </SafeAreaView>
+      </Modal>
+    );
+  }
+
+  render() {
+    const { flag } = this.state;
+    const {
+      containerStyle,
+      flagStyle,
+      phoneInputStyle,
+      dialCodeTextStyle,
       inputProps
     } = this.props;
-
     return (
-        <View style={{ ...styles.container, ...containerStyle }}>
-          <TouchableOpacity onPress={this.setDefaultCountries}>
-            <View style={styles.openDialogView}>
-              <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
-              <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
-            </View>
-          </TouchableOpacity>
-          <TextInput
-              {...inputProps}
-              style={[styles.phoneInputStyle, phoneInputStyle]}
-              placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
-              autoCorrect={false}
-              keyboardType="number-pad"
-              secureTextEntry={false}
-              value={this.state.phoneNumber}
-              onChangeText={this.onChangeText}
-          />
-          <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
-            <SafeAreaView style={{ flex: 1 }}>
-              <View style={[styles.modalContainer, modalContainer]}>
-                <FlatList
-                    style={{ flex: 1 }}
-                    data={this.state.countryData}
-                    keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={ <View style={styles.filterInputStyleContainer}>
-                    <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
-                    <Image style={styles.closeIconStyle} source={Platform.select({ ios: CloseIconIOS, android: CloseIconAndroid})} />
-              </TouchableOpacity>
-                  <TextInput autoFocus={false} autoCompleteType={'off'} autoCorrect={false} onChangeText={this.filterCountries} placeholder={filterText || 'Enter country name'} style={[styles.filterInputStyle, filterInputStyle]} />
-                </View>}
-                    renderItem={
-                      ({ item, index }) => (
-                            <View style={index !== data.length - 1 && styles.countryModalSeparatorStyle}>
-                          <TouchableOpacity style={[styles.countryModalStyle, countryModalStyle]}  onPress={() => this.onCountryChange(item.name)}>
-                              <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag}</Text>
-                              <View style={styles.modalCountryItemContainer}>
-                                <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item.name}</Text>
-                                <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{`  ${item.dialCode}`}</Text>
-                              </View>
-                          </TouchableOpacity>
-                            </View>
-                      )
-                    }
-                    stickyHeaderIndices={[0]}
-                />
-              </View>
-            </SafeAreaView>
-          </Modal>
-        </View>
+      <View style={{ ...styles.container, ...containerStyle }}>
+        <TouchableOpacity onPress={() => this.showModal()}>
+          <View style={styles.openDialogView}>
+            <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
+            <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
+          </View>
+        </TouchableOpacity>
+        {this.renderModal()}
+        <TextInput
+          {...inputProps}
+          style={[styles.phoneInputStyle, phoneInputStyle]}
+          placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
+          autoCorrect={false}
+          keyboardType="number-pad"
+          secureTextEntry={false}
+          value={this.state.phoneNumber}
+          onChangeText={this.onChangeText}
+        />
+
+      </View>
+
+
     );
   }
 }
 
 IntlPhoneInput.propTypes = {
+  lang: PropTypes.string,
   defaultCountry: PropTypes.string,
   onChangeText: PropTypes.func,
+  customModal: PropTypes.func,
   phoneInputStyle: PropTypes.object, // {}
   containerStyle: PropTypes.object, // {}
   dialCodeTextStyle: PropTypes.object, // {}
@@ -207,7 +206,8 @@ IntlPhoneInput.propTypes = {
   filterText: PropTypes.string,
   closeText: PropTypes.string,
   searchIconStyle: PropTypes.object,
-  disableCountryChange:PropTypes.func
+  disableCountryChange: PropTypes.bool,
+  inputRef: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -230,11 +230,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   modalFlagStyle: {
-    fontSize: 30,
+    fontSize: 25,
   },
   modalContainer: {
     paddingTop: 15,
-    flex: 1,
+    paddingLeft: 25,
+    paddingRight: 25,
+    flex: 10,
     backgroundColor: 'white'
   },
   flagStyle: {
@@ -244,22 +246,16 @@ const styles = StyleSheet.create({
   },
   countryModalStyle: {
     flex: 1,
-    padding: 15,
+    borderColor: 'black',
+    borderTopWidth: 1,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  countryModalSeparatorStyle: {
-    borderColor: '#eee',
-    borderBottomWidth: 1,
-  },
   openDialogView: {
-    flex: 1,
-    paddingHorizontal: 10,
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
+    alignItems: 'center'
   },
   filterInputStyle: {
     flex: 1,
@@ -272,27 +268,22 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   filterInputStyleContainer: {
-    alignSelf: 'flex-start',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
   phoneInputStyle: {
-    height: '100%',
-    paddingTop: 15,
-    paddingBottom: 16,
-    paddingHorizontal: 20,
     marginLeft: 5,
-    flex: 1,
-    flexDirection: 'row',
-    borderRadius: 10,
-    backgroundColor: 'white',
+    flex: 1
   },
   container: {
     flexDirection: 'row',
+    paddingHorizontal: 12,
+    padding: 5,
     borderRadius: 10,
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   searchIconStyle: {
     color: 'black',
@@ -319,10 +310,5 @@ const styles = StyleSheet.create({
   closeButtonStyle: {
     padding: 12,
     alignItems: 'center',
-  },
-  closeIconStyle: {
-    height: 25,
-    width: 25,
-    resizeMode: 'contain',
   }
 });
