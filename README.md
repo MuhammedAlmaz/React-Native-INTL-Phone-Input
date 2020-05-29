@@ -73,7 +73,7 @@ Custom Modal Example
 
 
 
-Supported Languages
+Supported Languages |  |
 --- | --- |
 TR | Turkish |
 LT | Lithuanian |
