@@ -121,7 +121,7 @@ const Countries = [
   { ru:"Либерия",lt:"Liberija",tr:"Liberya", en: 'Liberia',flag: '🇱🇷',code: 'LR', dialCode: '+231', mask: '999 999 9999' },
   { ru:"Ливийская арабская джамахирия",lt:"Libijos arabų Jamahiriya",tr:"Libya Arap Jamahiriya", en: 'Libyan Arab Jamahiriya',flag: '🇱🇾',code: 'LY', dialCode: '+218', mask: '999-9999999' },
   { ru:"Лихтенштейн",lt:"Lichtenšteinas",tr:"Lihtenştayn", en: 'Liechtenstein',flag: '🇱🇮',code: 'LI', dialCode: '+423', mask: '999 999 999' },
-  { ru:"Литва",lt:"Lietuva",tr:"Litvanya", en: 'Lithuania',flag: '🇱🇹',code: 'LT', dialCode: '+370', mask: '(9-999) 99999' },
+  { ru:"Литва",lt:"Lietuva",tr:"Litvanya", en: 'Lithuania',flag: '🇱🇹',code: 'LT', dialCode: '+370', mask: '(9-999) 9999' },
   { ru:"Люксембург",lt:"Liuksemburgas",tr:"Lüksemburg", en: 'Luxembourg',flag: '🇱🇺',code: 'LU', dialCode: '+352', mask: '999 999 999' },
   { ru:"Macao",lt:"Makao",tr:"Macao", en: 'Macao',flag: '🇲🇴',code: 'MO', dialCode: '+853', mask: '9999 9999' },
   { ru:"Македония",lt:"Makedonija",tr:"Makedonya", en: 'Macedonia',flag: '🇲🇰',code: 'MK', dialCode: '+389', mask: '999 999 999' },
