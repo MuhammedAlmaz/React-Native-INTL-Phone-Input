@@ -95,7 +95,12 @@ export default class IntlPhoneInput extends React.Component {
   }
 
   filterCountries = (value) => {
-    const countryData = data.filter((obj) => (obj.name.indexOf(value) > -1 || obj.dialCode.indexOf(value) > -1));
+    const countryData = data.filter((obj) => (
+        obj.ru.indexOf(value) > -1 ||
+        obj.en.indexOf(value) > -1 ||
+        obj.tr.indexOf(value) > -1 ||
+        obj.dialCode.indexOf(value) > -1)
+    );
     this.setState({ countryData });
   }
 
