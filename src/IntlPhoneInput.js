@@ -95,6 +95,8 @@ export default class IntlPhoneInput extends React.Component {
   }
 
   filterCountries = (value) => {
+   const { lang
+  } = this.props;
     const countryData = data.filter((obj) => (obj[lang?.toLowerCase()??"en"]?.indexOf(value) > -1 || obj.dialCode.indexOf(value) > -1));
     this.setState({ countryData });
   }
@@ -124,7 +126,7 @@ export default class IntlPhoneInput extends React.Component {
         <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.modalContainer, modalContainer]}>
           <View style={styles.filterInputStyleContainer}>
-            <TextInput autoFocus autoCompleteType={false} onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
+            <TextInput autoFocus autoCompleteType="tel" onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
             <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
           </View>
           <FlatList
