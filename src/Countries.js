@@ -94,7 +94,7 @@ const Countries = [
   { ru:"Гонконг",lt:"Honkongas",tr:"Hong Kong", en: 'Hong Kong',flag: '🇭🇰',code: 'HK', dialCode: '+852', mask: '9999 9999' },
   { ru:"Венгрия",lt:"Vengrija",tr:"Macaristan", en: 'Hungary',flag: '🇭🇺',code: 'HU', dialCode: '+36', mask: '(99) 999 9999' },
   { ru:"Исландия",lt:"Islandija",tr:"İzlanda", en: 'Iceland',flag: '🇮🇸',code: 'IS', dialCode: '+354', mask: '999 9999' },
-  { ru:"Индия",lt:"Indija",tr:"Hindistan", en: 'India',flag: '🇮🇳',code: 'IN', dialCode: '+91', mask: '999999 99999' },
+  { ru:"Индия",lt:"Indija",tr:"Hindistan", en: 'India',flag: '🇮🇳',code: 'IN', dialCode: '+91', mask: '99999 99999' },
   { ru:"Индонезия",lt:"Indonezija",tr:"Endonezya", en: 'Indonesia',flag: '🇮🇩',code: 'ID', dialCode: '+62', mask: '9999-999-999' },
   { ru:"Иран, Исламская Республика Персидского залива",lt:"Iranas, Persijos įlankos Islamo Respublika",tr:"İran, Basra Körfezi İslam Cumhuriyeti", en: 'Iran, Islamic Republic of Persian Gulf',flag: '🇮🇷',code: 'IR', dialCode: '+98', mask: '9999 999 9999' },
   { ru:"Ирак",lt:"Irakas",tr:"Irak", en: 'Iraq',flag: '🇮🇶',code: 'IQ', dialCode: '+964', mask: '9999 999 9999' },
