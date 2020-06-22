@@ -28,7 +28,7 @@ const Countries = [
   { ru:"Босния и Герцеговина",lt:"Bosnija ir Hercegovina",tr:"Bosna Hersek", en: 'Bosnia and Herzegovina',flag: '🇧🇦',code: 'BA', dialCode: '+387', mask: '999 999 999' },
   { ru:"Ботсвана",lt:"Botsvana",tr:"Botsvana", en: 'Botswana',flag: '🇧🇼',code: 'BW', dialCode: '+267', mask: '99 999 999' },
   { ru:"Остров Буве",lt:"Bouvet sala",tr:"Bouvet Adası", en: 'Bouvet Island',flag: '🇧🇻',code: 'BV', dialCode: '+47', mask: '(99) 99999-9999' },
-  { ru:"Бразилия",lt:"Brazilija",tr:"Brezilya", en: 'Brazil',flag: '🇧🇷',code: 'BR', dialCode: '+55', mask: '999 9999' },
+  { ru:"Бразилия",lt:"Brazilija",tr:"Brezilya", en: 'Brazil',flag: '🇧🇷',code: 'BR', dialCode: '+55', mask: '(99) 99999 9999' },
   { ru:"Британская территория Индийского океана",lt:"Britanijos Indijos vandenyno teritorija",tr:"Britanya Hint Okyanusu Toprakları", en: 'British Indian Ocean Territory',flag: '🇮🇴',code: 'IO', dialCode: '+246', mask: '(999) 999-9999' },
   { ru:"Бруней-Даруссалам",lt:"Brunėjaus Darusalamas",tr:"Brunei Sultanlığı", en: 'Brunei Darussalam',flag: '🇧🇳',code: 'BN', dialCode: '+673', mask: '999 9999' },
   { ru:"Болгария",lt:"Bulgarija",tr:"Bulgaristan", en: 'Bulgaria',flag: '🇧🇬',code: 'BG', dialCode: '+359', mask: '999 999 999' },
