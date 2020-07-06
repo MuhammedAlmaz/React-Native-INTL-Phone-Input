@@ -136,7 +136,7 @@ const Countries = [
   { ru:"Мавритания",lt:"Mauritanija",tr:"Moritanya", en: 'Mauritania',flag: '🇲🇷',code: 'MR', dialCode: '+222', mask: '99 99 99 99' },
   { ru:"Маврикий",lt:"Mauricijus",tr:"Mauritius", en: 'Mauritius',flag: '🇲🇺',code: 'MU', dialCode: '+230', mask: '9999 9999' },
   { ru:"Майотта",lt:"Majotas",tr:"Mayotte", en: 'Mayotte',flag: '🇾🇹',code: 'YT', dialCode: '+262', mask: '9999 99 99 99' },
-  { ru:"Мексика",lt:"Meksika",tr:"Meksika", en: 'Mexico',flag: '🇲🇽',code: 'MX', dialCode: '+52', mask: '999 999 999 9999' },
+  { ru:"Мексика",lt:"Meksika",tr:"Meksika", en: 'Mexico',flag: '🇲🇽',code: 'MX', dialCode: '+52', mask: '999-999 9999' },
   { ru:"Микронезия, Федеративные Штаты Микронезии",lt:"Mikronezijos Federacinės Mikronezijos valstybės",tr:"Mikronezya, Mikronezya Federal Devletleri", en: 'Micronesia, Federated States of Micronesia',flag: '🇫🇲',code: 'FM', dialCode: '+691', mask: '999 9999' },
   { ru:"Молдова",lt:"Moldovoje",tr:"Moldova", en: 'Moldova',flag: '🇲🇩',code: 'MD', dialCode: '+373', mask: '9999 99 999' },
   { ru:"Монако",lt:"Monakas",tr:"Monako", en: 'Monaco',flag: '🇲🇨',code: 'MC', dialCode: '+377', mask: '99 99 99 99 99' },
@@ -237,4 +237,3 @@ const Countries = [
 ];
 
 export default Countries;
-
