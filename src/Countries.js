@@ -106,7 +106,7 @@ const Countries = [
   { ru:"Япония",lt:"Japonija",tr:"Japonya", en: 'Japan',flag: '🇯🇵',code: 'JP', dialCode: '+81', mask: '999-9999-9999' },
   { ru:"Джерси",lt:"Džersis",tr:"Jersey", en: 'Jersey',flag: '🇯🇪',code: 'JE', dialCode: '+44', mask: '99999 999999' },
   { ru:"Иордания",lt:"Jordanija",tr:"Ürdün", en: 'Jordan',flag: '🇯🇴',code: 'JO', dialCode: '+962', mask: '99 9999 9999' },
-  { ru:"Казахстан",lt:"Kazachstanas",tr:"Kazakistan", en: 'Kazakhstan',flag: '🇰🇿',code: 'KZ', dialCode: '+7', mask: '9 (999) 999 9999' },
+  { ru:"Казахстан",lt:"Kazachstanas",tr:"Kazakistan", en: 'Kazakhstan',flag: '🇰🇿',code: 'KZ', dialCode: '+7', mask: '(999) 999 9999' },
   { ru:"Кения",lt:"Kenija",tr:"Kenya", en: 'Kenya',flag: '🇰🇪',code: 'KE', dialCode: '+254', mask: '9999 999999' },
   { ru:"Кирибати",lt:"Kiribatis",tr:"Kiribati", en: 'Kiribati',flag: '🇰🇮',code: 'KI', dialCode: '+686', mask: '99999999' },
   { ru:"Корея, Корейская Народно-Демократическая Республика",lt:"Korėja, Korėjos Liaudies Demokratinė Respublika",tr:"Kore, Kore Demokratik Halk Cumhuriyeti", en: "Korea, Democratic People's Republic of Korea",flag: '🇰🇵',code: 'KP', dialCode: '+850', mask: '(9) 99999' },
