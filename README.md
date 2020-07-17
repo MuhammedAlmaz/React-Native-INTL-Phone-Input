@@ -100,4 +100,5 @@ modalCountryItemCountryNameStyle | Style |  |
 filterText | String | Filter | This is the text of placeholder input of top modal 
 closeText | String | CLOSE | This prop is about the text of bottom modal 
 disableCountryChange | Bool | false | This prop is about disable open select country modal
+renderAction | Function |  | This prop attaching a component right of phone input
 
