@@ -29,12 +29,12 @@ export default class IntlPhoneInput extends React.Component {
   }
 
   onChangePropText=(unmaskedPhoneNumber, phoneNumber) => {
-    const { dialCode, mask } = this.state;
+    const { dialCode, mask,countryData } = this.state;
     const countOfNumber = mask.match(/9/g).length;
     if (this.props.onChangeText) {
       const isVerified = countOfNumber === unmaskedPhoneNumber?.length && phoneNumber?.length > 0;
       this.props.onChangeText({
-        dialCode, unmaskedPhoneNumber, phoneNumber, isVerified
+        dialCode, unmaskedPhoneNumber, phoneNumber, isVerified,countryData
       });
     }
   }
