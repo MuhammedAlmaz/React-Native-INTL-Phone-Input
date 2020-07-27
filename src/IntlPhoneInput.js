@@ -24,7 +24,8 @@ export default class IntlPhoneInput extends React.Component {
       dialCode: defaultCountry.dialCode,
       phoneNumber: '',
       mask: defaultCountry.mask,
-      countryData: data
+      countryData: data,
+      selectedCountry:defaultCountry
     };
   }
 
@@ -80,7 +81,8 @@ export default class IntlPhoneInput extends React.Component {
         dialCode: country.dialCode,
         flag: country.flag,
         mask: country.mask,
-        phoneNumber: ''
+        phoneNumber: '',
+        selectedCountry:country
       });
       this.hideModal();
     } catch (err) {
@@ -89,7 +91,8 @@ export default class IntlPhoneInput extends React.Component {
         dialCode: defaultCountry.dialCode,
         flag: defaultCountry.flag,
         mask: defaultCountry.mask,
-        phoneNumber: ''
+        phoneNumber: '',
+        selectedCountry:defaultCountry
       });
     }
   }
