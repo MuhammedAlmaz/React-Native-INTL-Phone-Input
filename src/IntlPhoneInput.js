@@ -25,7 +25,7 @@ export default class IntlPhoneInput extends React.Component {
       phoneNumber: props.initialValue || '',
       mask: defaultCountry.mask,
       countryData: data,
-      selectedCountry:defaultCountry
+      selectedCountry: defaultCountry
     };
   }
 
@@ -183,7 +183,8 @@ renderAction=()=>{
         <TouchableOpacity onPress={() => this.showModal()}>
           <View style={styles.openDialogView}>
             <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
-            <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
+            <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>[{this.state.selectedCountry.code}] {this.state.dialCode}</Text>
+            <Text style={{ fontSize: 8, color: 'grey'}}> &#x25BC;</Text>
           </View>
         </TouchableOpacity>
         {this.renderModal()}
