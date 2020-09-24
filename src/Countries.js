@@ -173,7 +173,7 @@ const Countries = [
   { ru:"Пуэрто-Рико",lt:"Puerto Rikas",tr:"Porto Riko", en: 'Puerto Rico',flag: '🇵🇷',code: 'PR', dialCode: '+1939', mask: '(999) 999-9999' },
   { ru:"Катар",lt:"Kataras",tr:"Katar", en: 'Qatar',flag: '🇶🇦',code: 'QA', dialCode: '+974', mask: '9999 9999' },
   { ru:"Румыния",lt:"Rumunija",tr:"Romanya", en: 'Romania',flag: '🇷🇴',code: 'RO', dialCode: '+40', mask: '9999 999 999' },
-  { ru:"Россия",lt:"Rusija",tr:"Rusya", en: 'Russia',flag: '🇷🇺',code: 'RU', dialCode: '+7', mask: '9 (999) 999-99-99' },
+  { ru:"Россия",lt:"Rusija",tr:"Rusya", en: 'Russia',flag: '🇷🇺',code: 'RU', dialCode: '+7', mask: '(999) 999-99-99' },
   { ru:"Руанда",lt:"Ruanda",tr:"Ruanda", en: 'Rwanda',flag: '🇷🇼',code: 'RW', dialCode: '+250', mask: '9999 999 999' },
   { ru:"Сен-Бартельми",lt:"Šventasis Barthelemy",tr:"Saint Barthelemy", en: 'Saint Barthelemy',flag: '🇧🇱',code: 'BL', dialCode: '+590', mask: '9999 99 99 99' },
   { ru:"Святой Елены, Вознесения и Тристан-да-Кунья",lt:"Šventoji Helena, Ascension ir Tristan Da Cunha",tr:"Saint Helena, Yükseliş ve Tristan Da Cunha", en: 'Saint Helena, Ascension and Tristan Da Cunha',flag: '🇸🇭',code: 'SH', dialCode: '+290', mask: '99999' },
