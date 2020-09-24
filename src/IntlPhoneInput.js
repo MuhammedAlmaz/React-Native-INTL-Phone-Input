@@ -23,14 +23,14 @@ export default class IntlPhoneInput extends React.Component {
       modalVisible: false,
       dialCode: defaultCountry.dialCode,
       phoneNumber: '',
-      mask: defaultCountry.mask,
+      mask: props.mask || defaultCountry.mask,
       countryData: data,
       selectedCountry:defaultCountry
     };
   }
 
   onChangePropText=(unmaskedPhoneNumber, phoneNumber) => {
-    const { dialCode, mask,selectedCountry } = this.state;
+    const { dialCode, mask, selectedCountry } = this.state;
     const countOfNumber = mask.match(/9/g).length;
     if (this.props.onChangeText) {
       const isVerified = countOfNumber === unmaskedPhoneNumber?.length && phoneNumber?.length > 0;
@@ -80,7 +80,7 @@ export default class IntlPhoneInput extends React.Component {
       this.setState({
         dialCode: country.dialCode,
         flag: country.flag,
-        mask: country.mask,
+        mask: this.props.mask || country.mask,
         phoneNumber: '',
         selectedCountry:country
       });
@@ -90,7 +90,7 @@ export default class IntlPhoneInput extends React.Component {
       this.setState({
         dialCode: defaultCountry.dialCode,
         flag: defaultCountry.flag,
-        mask: defaultCountry.mask,
+        mask: this.props.mask || defaultCountry.mask,
         phoneNumber: '',
         selectedCountry:defaultCountry
       });
@@ -209,6 +209,7 @@ renderAction=()=>{
 IntlPhoneInput.propTypes = {
   lang: PropTypes.string,
   defaultCountry: PropTypes.string,
+  mask: PropTypes.string,
   onChangeText: PropTypes.func,
   customModal: PropTypes.func,
   phoneInputStyle: PropTypes.object, // {}
