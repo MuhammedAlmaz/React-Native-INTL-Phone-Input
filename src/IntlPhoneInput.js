@@ -25,7 +25,8 @@ export default class IntlPhoneInput extends React.Component {
       phoneNumber: '',
       mask: defaultCountry.mask,
       countryData: data,
-      selectedCountry:defaultCountry
+      selectedCountry:defaultCountry,
+      placeholderTextColor: ''
     };
   }
 
@@ -121,15 +122,15 @@ export default class IntlPhoneInput extends React.Component {
       filterText,
       searchIconStyle,
       closeButtonStyle,
-      lang
+      lang,
+      placeholderTextColor
     } = this.props;
-    
     return (
       <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
         <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.modalContainer, modalContainer]}>
           <View style={styles.filterInputStyleContainer}>
-            <TextInput autoFocus onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} />
+            <TextInput autoFocus onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} placeholderTextColor={placeholderTextColor  || 'black'}/>
             <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
           </View>
           <FlatList
@@ -176,7 +177,8 @@ renderAction=()=>{
       flagStyle,
       phoneInputStyle,
       dialCodeTextStyle,
-      inputProps
+      inputProps,
+      placeholderTextColor
     } = this.props;
     return (
       <View style={{ ...styles.container, ...containerStyle }}>
@@ -196,6 +198,7 @@ renderAction=()=>{
           secureTextEntry={false}
           value={this.state.phoneNumber}
           onChangeText={this.onChangeText}
+          placeholderTextColor={placeholderTextColor || 'black'}
         />
         {this.renderAction()}
 
@@ -224,6 +227,7 @@ IntlPhoneInput.propTypes = {
   searchIconStyle: PropTypes.object,
   disableCountryChange: PropTypes.bool,
   inputRef: PropTypes.object,
+  placeholderTextColor: PropTypes.string
 };
 
 const styles = StyleSheet.create({
