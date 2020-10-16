@@ -26,7 +26,7 @@ export default class IntlPhoneInput extends React.Component {
       mask: defaultCountry.mask,
       countryData: data,
       selectedCountry:defaultCountry,
-      placeholderTextColor: 'black'
+      placeholderTextColor: 'grey'
     };
   }
 
