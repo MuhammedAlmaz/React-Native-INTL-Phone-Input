@@ -26,7 +26,7 @@ export default class IntlPhoneInput extends React.Component {
       mask: defaultCountry.mask,
       countryData: data,
       selectedCountry:defaultCountry,
-      placeholderTextColor: ''
+      placeholderTextColor: 'black'
     };
   }
 
@@ -130,7 +130,7 @@ export default class IntlPhoneInput extends React.Component {
         <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.modalContainer, modalContainer]}>
           <View style={styles.filterInputStyleContainer}>
-            <TextInput autoFocus onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} placeholderTextColor={placeholderTextColor  || 'black'}/>
+            <TextInput autoFocus onChangeText={this.filterCountries} placeholder={filterText || 'Filter'} style={[styles.filterInputStyle, filterInputStyle]} placeholderTextColor={placeholderTextColor }/>
             <Text style={[styles.searchIconStyle, searchIconStyle]}>🔍</Text>
           </View>
           <FlatList
@@ -198,7 +198,7 @@ renderAction=()=>{
           secureTextEntry={false}
           value={this.state.phoneNumber}
           onChangeText={this.onChangeText}
-          placeholderTextColor={placeholderTextColor || 'black'}
+          placeholderTextColor={placeholderTextColor}
         />
         {this.renderAction()}
 
