@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  FlatList,
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
+  Text,
+  Modal,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import data from './Countries';
