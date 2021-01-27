@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  Modal,
   FlatList,
-  StyleSheet,
+  Modal,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
+  StyleSheet,
+  Text,
   TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import data from './Countries';
@@ -84,7 +84,7 @@ export default class IntlPhoneInput extends React.Component {
         mask: country.mask,
         phoneNumber: '',
         selectedCountry:country
-      });
+      }, () => this.onChangeText(''));
       this.hideModal();
     } catch (err) {
       const defaultCountry = this.state.defaultCountry;
@@ -94,7 +94,7 @@ export default class IntlPhoneInput extends React.Component {
         mask: defaultCountry.mask,
         phoneNumber: '',
         selectedCountry:defaultCountry
-      });
+      }, () => this.onChangeText(''));
     }
   }
 
