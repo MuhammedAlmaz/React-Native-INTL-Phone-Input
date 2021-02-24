@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  Modal,
   FlatList,
-  StyleSheet,
+  Modal,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
+  StyleSheet,
+  Text,
   TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import data from './Countries';
@@ -72,7 +72,7 @@ export default class IntlPhoneInput extends React.Component {
 
   showModal = () => (this.props.disableCountryChange ? null : this.setState({ modalVisible: true }));
 
-  hideModal = () => this.setState({ modalVisible: false });
+  hideModal = () => this.setState({ modalVisible: false, countryData: data });
 
   onCountryChange = async (code) => {
     const countryData = await data;
