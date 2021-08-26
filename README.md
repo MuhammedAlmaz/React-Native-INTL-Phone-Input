@@ -87,6 +87,7 @@ prop names |type |default value | comment
 lang | String |  | Translate country name on modal
 placeholder | String |  | This prop change the phone input placeholder
 defaultCountry | String | TR | You can change your default country code 
+mask | String |  | You can set custom mask
 onChangeText | Function |  | This function works when input text is changed 
 customModal | Function |  | Generate your custom modal
 phoneInputStyle | Style |  | This prop is about the text field's ReactNative.TextInput style 
