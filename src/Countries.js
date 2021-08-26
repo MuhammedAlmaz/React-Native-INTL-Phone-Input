@@ -149,7 +149,7 @@ const Countries = [
   { ru:"Намибия",lt:"Namibija",tr:"Namibya", en: 'Namibia',flag: '🇳🇦',code: 'NA', dialCode: '+264', mask: '999 999 99999' },
   { ru:"Науру",lt:"Nauru",tr:"Nauru", en: 'Nauru',flag: '🇳🇷',code: 'NR', dialCode: '+674', mask: '999 9999' },
   { ru:"Непал",lt:"Nepalas",tr:"Nepal", en: 'Nepal',flag: '🇳🇵',code: 'NP', dialCode: '+977', mask: '999-9999999' },
-  { ru:"Нидерланды",lt:"Nyderlandai",tr:"Hollanda", en: 'Netherlands',flag: '🇳🇱',code: 'NL', dialCode: '+31', mask: '99' },
+  { ru:"Нидерланды",lt:"Nyderlandai",tr:"Hollanda", en: 'Netherlands',flag: '🇳🇱',code: 'NL', dialCode: '+31', mask: '99 99999999' },
   { ru:"Новая Каледония",lt:"Naujoji Kaledonija",tr:"Yeni Kaledonya", en: 'New Caledonia',flag: '🇳🇨',code: 'NC', dialCode: '+687', mask: '99.99.99' },
   { ru:"Новая Зеландия",lt:"Naujoji Zelandija",tr:"Yeni Zelanda", en: 'New Zealand',flag: '🇳🇿',code: 'NZ', dialCode: '+64', mask: '999 999 9999' },
   { ru:"Никарагуа",lt:"Nikaragva",tr:"Nikaragua", en: 'Nicaragua',flag: '🇳🇮',code: 'NI', dialCode: '+505', mask: '9999 9999' },
