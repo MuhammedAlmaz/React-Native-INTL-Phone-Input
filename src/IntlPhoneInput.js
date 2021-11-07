@@ -72,7 +72,7 @@ export default class IntlPhoneInput extends React.Component {
 
   showModal = () => (this.props.disableCountryChange ? null : this.setState({ modalVisible: true }));
 
-  hideModal = () => this.setState({ modalVisible: false },()=>{filterCountries('');});
+  hideModal = () => this.setState({ modalVisible: false });
 
   onCountryChange = async (code) => {
     const countryData = await data;
@@ -178,12 +178,13 @@ renderAction=()=>{
       phoneInputStyle,
       dialCodeTextStyle,
       inputProps,
-      placeholderTextColor
+      placeholderTextColor,
+      flagDialCodeContainerStyle
     } = this.props;
     return (
       <View style={{ ...styles.container, ...containerStyle }}>
         <TouchableOpacity onPress={() => this.showModal()}>
-          <View style={styles.openDialogView}>
+          <View style={[styles.openDialogView,flagDialCodeContainerStyle]}>
             <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
             <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
           </View>
