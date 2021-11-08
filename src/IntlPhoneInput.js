@@ -101,7 +101,7 @@ export default class IntlPhoneInput extends React.Component {
   filterCountries = (value) => {
    const { lang
   } = this.props;
-    const countryData = data.filter((obj) => (obj[lang?.toLowerCase()??"en"]?.indexOf(value) > -1 || obj.dialCode.indexOf(value) > -1));
+    const countryData = data.filter((obj) => (obj[lang?.toLowerCase()??"en"]?.toLowerCase().indexOf(value?.toLowerCase()) > -1 || obj.dialCode.indexOf(value) > -1));
     this.setState({ countryData });
   }
 
@@ -178,12 +178,13 @@ renderAction=()=>{
       phoneInputStyle,
       dialCodeTextStyle,
       inputProps,
-      placeholderTextColor
+      placeholderTextColor,
+      flagDialCodeContainerStyle
     } = this.props;
     return (
       <View style={{ ...styles.container, ...containerStyle }}>
         <TouchableOpacity onPress={() => this.showModal()}>
-          <View style={styles.openDialogView}>
+          <View style={[styles.openDialogView,flagDialCodeContainerStyle]}>
             <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
             <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
           </View>
