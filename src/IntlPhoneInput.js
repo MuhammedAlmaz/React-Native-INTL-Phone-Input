@@ -22,7 +22,7 @@ export default class IntlPhoneInput extends React.Component {
       flag: defaultCountry.flag,
       modalVisible: false,
       dialCode: defaultCountry.dialCode,
-      phoneNumber: props.value || '',
+      phoneNumber: '',
       mask: props.mask || defaultCountry.mask,
       countryData: data,
       selectedCountry:defaultCountry,
@@ -170,8 +170,13 @@ renderAction=()=>{
   return null;
 }
 
+  componentDidMount() {
+    this.onChangeText(this.props.value || '')
+  }
+
   componentDidUpdate(prevProps) {
-    this.onChangeText(prevProps.value)
+    if (prevProps.value !== this.props.value)
+      this.onChangeText(prevProps.value)
   }
 
   render() {
