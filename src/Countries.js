@@ -8,7 +8,7 @@ const Countries = [
   { ru:"Ангола",lt:"Angoloje",tr:"Angora", en: 'Angola',flag: '🇦🇴',code: 'AO', dialCode: '+244', mask: '999 999 999' },
   { ru:"Ангилья",lt:"Angilija",tr:"Anguilla", en: 'Anguilla',flag: '🇦🇮',code: 'AI', dialCode: '+1264', mask: '(999) 999-9999' },
   { ru:"Антигуа и Барбуда",lt:"Antigva ir Barbuda",tr:"Antigua ve Barbuda", en: 'Antigua and Barbuda',flag: '🇦🇬',code: 'AG', dialCode: '+1268', mask: '(999) 999-9999' },
-  { ru:"Аргентина",lt:"Argentina",tr:"Arjantin", en: 'Argentina',flag: '🇦🇷',code: 'AR', dialCode: '+54', mask: '999 99-9999-9999' },
+  { ru:"Аргентина",lt:"Argentina",tr:"Arjantin", en: 'Argentina',flag: '🇦🇷',code: 'AR', dialCode: '+54', mask: '99 9999-9999' },
   { ru:"Армения",lt:"Armėnija",tr:"Ermenistan", en: 'Armenia',flag: '🇦🇲',code: 'AM', dialCode: '+374', mask: '999 999999' },
   { ru:"Аруба",lt:"Aruba",tr:"Aruba", en: 'Aruba',flag: '🇦🇼',code: 'AW', dialCode: '+297', mask: '999 9999' },
   { ru:"Австралия",lt:"Australija",tr:"Avustralya", en: 'Australia',flag: '🇦🇺',code: 'AU', dialCode: '+61', mask: '9999 999 999' },
