@@ -26,7 +26,9 @@ export default class IntlPhoneInput extends React.Component {
       mask: props.mask || defaultCountry.mask,
       countryData: data,
       selectedCountry:defaultCountry,
-      placeholderTextColor: 'grey'
+      placeholderTextColor: 'grey',
+
+      countryCodeChanged: false, // Bilal: added this property for use with RTL
     };
   }
 
@@ -50,7 +52,6 @@ export default class IntlPhoneInput extends React.Component {
       return;
     }
 
-
     let phoneNumber = this.state.mask.replace(/9/g, '_');
     for (let index = 0; index < unmaskedPhoneNumber.length; index += 1) {
       phoneNumber = phoneNumber.replace('_', unmaskedPhoneNumber[index]);
@@ -69,38 +70,47 @@ export default class IntlPhoneInput extends React.Component {
     this.setState({ phoneNumber });
   }
 
-
   showModal = () => (this.props.disableCountryChange ? null : this.setState({ modalVisible: true }));
-
   hideModal = () => this.setState({ modalVisible: false });
 
   onCountryChange = async (code) => {
-    const countryData = await data;
+    this.setState({ countryCodeChanged: true });
+    const countryData = data;
+    let newState = {};
     try {
-      const country = await countryData.filter((obj) => obj.code === code)[0];
-      this.setState({
+      const country = countryData.filter((obj) => obj.code === code)[0];
+
+      // Bilal: For some reason if the Android device (not the app) has the default language set to an RTL language
+      //    the mask functionality does NOT work. Until we figure out this mysterious behaviour, I thought
+      //    we should add a mask ONLY if the device's default language is NOT RTL.
+      //  If the property deviceRTL is NOT set (the developer does not add it to their code),
+      //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+      newState = {
         dialCode: country.dialCode,
         flag: country.flag,
-        mask: this.props.mask || country.mask,
+        // mask: this.props.mask || country.mask, // Bilal: this is the original code
         phoneNumber: '',
         selectedCountry:country
-      });
+      };
+      if (!this.props.deviceRTL) { newState = { ...newState, mask: this.props.mask || country.mask }; } // Bilal
+      this.setState(newState);
       this.hideModal();
     } catch (err) {
       const defaultCountry = this.state.defaultCountry;
-      this.setState({
+      newState = {
         dialCode: defaultCountry.dialCode,
         flag: defaultCountry.flag,
-        mask: this.props.mask || defaultCountry.mask,
+        // mask: this.props.mask || defaultCountry.mask, // Bilal: this is the original code
         phoneNumber: '',
         selectedCountry:defaultCountry
-      });
+      };
+      if (!this.props.deviceRTL) { newState = { ...newState, mask: this.props.mask || defaultCountry.mask }; } // Bilal
+      this.setState(newState);
     }
   }
 
   filterCountries = (value) => {
-   const { lang
-  } = this.props;
+    const { lang } = this.props;
     const countryData = data.filter((obj) => (obj[lang?.toLowerCase()??"en"]?.indexOf(value) > -1 || obj.dialCode.indexOf(value) > -1));
     this.setState({ countryData });
   }
@@ -138,18 +148,40 @@ export default class IntlPhoneInput extends React.Component {
             data={this.state.countryData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={
-          ({ item }) => (
-            <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.code)}>
-              <View style={[styles.countryModalStyle, countryModalStyle]}>
-                <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag}</Text>
-                <View style={styles.modalCountryItemContainer}>
-                  <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item[lang?.toLowerCase()??"en"]}</Text>
-                  <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{`  ${item.dialCode}`}</Text>
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-          )
-        }
+              ({ item }) => {
+                // Bilal: For some reason if the Android device (not the app) has the default language set to an RTL language
+                //    the country code is displayed wrong (61+). Until we figure out this mysterious behaviour, I thought
+                //    we should swap the country code string if the device's default language is RTL.
+                //  If the property deviceRTL is NOT set (the developer does not add it to their code),
+                //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+                let dialCodeWithPlus = item.dialCode;
+                if (this.props.deviceRTL && item.dialCode.slice(0, 1) === "+") {
+                  dialCodeWithPlus = item.dialCode.slice(1) + item.dialCode.slice(0, 1);
+                }
+
+                // Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag, country name & country code.
+                //  If the property appRTL is NOT set (the developer does not add it to their code),
+                //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+                const flagComponent = <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag + " "}</Text>;
+                const countryCode = <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item[lang?.toLowerCase()??"en"]}</Text>
+                const countryName = <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{dialCodeWithPlus}</Text>;
+                return (
+                <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.code)}>
+                  <View style={[styles.countryModalStyle, countryModalStyle]}>
+                    {/* Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code. */}
+                    {!this.props.appRTL && flagComponent}
+                    <View style={styles.modalCountryItemContainer}>
+                      {!this.props.appRTL && countryCode}
+                      {!this.props.appRTL && countryName}
+
+                      {this.props.appRTL && countryName}
+                      {this.props.appRTL && countryCode}
+                    </View>
+                    {this.props.appRTL && flagComponent}
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
+            }
           />
         </View>
         <TouchableOpacity onPress={() => this.hideModal()} style={[styles.closeButtonStyle, closeButtonStyle]}>
@@ -160,15 +192,14 @@ export default class IntlPhoneInput extends React.Component {
     );
   }
 
-renderAction=()=>{
-  const renderAction=this.props.renderAction;
-  if(renderAction) {
-    console.log("action",renderAction);
-    if(typeof renderAction!=="function") throw ("The renderAction is not a function. Please set a renderAction function on there");
-    else return this.props.renderAction();
+  renderAction=()=>{
+    const renderAction=this.props.renderAction;
+    if(renderAction) {
+      if(typeof renderAction!=="function") throw ("The renderAction is not a function. Please set a renderAction function on there");
+      else return this.props.renderAction();
+    }
+    return null;
   }
-  return null;
-}
 
   render() {
     const { flag } = this.state;
@@ -178,33 +209,63 @@ renderAction=()=>{
       phoneInputStyle,
       dialCodeTextStyle,
       inputProps,
-      placeholderTextColor
+      placeholderTextColor,
     } = this.props;
+
+    const countryComponent = () => {
+      // Bilal: For some reason if the Android device (not the app) has the default language set to an RTL language
+      //    the country code is displayed wrong (61+). Until we figure out this mysterious behaviour, I thought
+      //    we should swap the country code string if the device's default language is RTL.
+      //  If the property deviceRTL is NOT set (the developer does not add it to their code),
+      //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+      let dialCodeWithPlus = this.state.dialCode;
+      if (this.props.deviceRTL && this.state.countryCodeChanged && dialCodeWithPlus.slice(0, 1) === "+") {
+        dialCodeWithPlus = dialCodeWithPlus.slice(1) + dialCodeWithPlus.slice(0, 1);
+      }
+
+      // Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code.
+      //  If the property appRTL is NOT set (the developer does not add it to their code),
+      //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+      const flagComponent = <Text style={[styles.flagStyle, flagStyle]}>{flag + " "}</Text>;
+      const countryCode = <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{dialCodeWithPlus + " "}</Text>;
+      return (
+      <TouchableOpacity onPress={() => this.showModal()}>
+        <View style={styles.openDialogView}>
+          {/* Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code. */}
+          {!this.props.appRTL && flagComponent}
+          {!this.props.appRTL && countryCode}
+
+          {this.props.appRTL && countryCode}
+          {this.props.appRTL && flagComponent}
+        </View>
+      </TouchableOpacity>);
+    };
+
+    const phoneInputComponent =
+    <TextInput
+      {...inputProps}
+      style={[styles.phoneInputStyle, phoneInputStyle]}
+      placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
+      autoCorrect={false}
+      keyboardType="number-pad"
+      secureTextEntry={false}
+      value={this.state.phoneNumber}
+      onChangeText={this.onChangeText}
+      placeholderTextColor={placeholderTextColor}
+    />;
+
     return (
       <View style={{ ...styles.container, ...containerStyle }}>
-        <TouchableOpacity onPress={() => this.showModal()}>
-          <View style={styles.openDialogView}>
-            <Text style={[styles.flagStyle, flagStyle]}>{flag}</Text>
-            <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{this.state.dialCode}</Text>
-          </View>
-        </TouchableOpacity>
-        {this.renderModal()}
-        <TextInput
-          {...inputProps}
-          style={[styles.phoneInputStyle, phoneInputStyle]}
-          placeholder={this.props.placeholder || this.state.mask.replace(/9/g, '_')}
-          autoCorrect={false}
-          keyboardType="number-pad"
-          secureTextEntry={false}
-          value={this.state.phoneNumber}
-          onChangeText={this.onChangeText}
-          placeholderTextColor={placeholderTextColor}
-        />
+        {/* Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code. */}
+        {!this.props.appRTL && countryComponent()}
+        {!this.props.appRTL && phoneInputComponent}
+
+        {this.props.appRTL && phoneInputComponent}
+        {this.props.appRTL && countryComponent()}
+
         {this.renderAction()}
-
-      </View>
-
-
+        {this.renderModal()}
+        </View>
     );
   }
 }
