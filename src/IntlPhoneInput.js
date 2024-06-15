@@ -24,7 +24,6 @@ export default class IntlPhoneInput extends React.Component {
       dialCode: defaultCountry.dialCode,
       phoneNumber: '',
       mask: props.mask || defaultCountry.mask,
-      // mask: "", // Bilal: this did NOT work
       countryData: data,
       selectedCountry:defaultCountry,
       placeholderTextColor: 'grey',
