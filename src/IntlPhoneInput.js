@@ -24,11 +24,12 @@ export default class IntlPhoneInput extends React.Component {
       dialCode: defaultCountry.dialCode,
       phoneNumber: '',
       mask: props.mask || defaultCountry.mask,
+      // mask: "", // Bilal: this did NOT work
       countryData: data,
       selectedCountry:defaultCountry,
       placeholderTextColor: 'grey',
 
-      countryCodeChanged: false, // Bilal: added this property for use with RTL
+      countryCodeChanged: false, // Bilal: added this local state property for use with deviceRTL property
     };
   }
 
@@ -80,19 +81,21 @@ export default class IntlPhoneInput extends React.Component {
     try {
       const country = countryData.filter((obj) => obj.code === code)[0];
 
-      // Bilal: For some reason if the Android device (not the app) has the default language set to an RTL language
-      //    the mask functionality does NOT work. Until we figure out this mysterious behaviour, I thought
-      //    we should add a mask ONLY if the device's default language is NOT RTL.
-      //  If the property deviceRTL is NOT set (the developer does not add it to their code),
-      //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+      // Bilal: For some reason if an Android device/emulatr (not the app) has the default language set to an RTL language, e.g. Arabic,
+      //    the direction of the numbers entered on the screen are swapped (displayed from right to left)! (123 456) is displayed (456 123).
+      //    This seems to be related the code of the mask! Removing the "mask" property below seems to fix the issue!
+      //    However, if the user starts entering the phone number; then, change the country, the number would still be swapped.
+      //    In other words, the following workaround would NOT work in this case.
+      //  If the property deviceRTL is NOT set (the developer does not add it to their code), the following code would NOT be applied.
+      //    This make this version downward compatible with older versions that does not have a deviceRTL property.
       newState = {
         dialCode: country.dialCode,
         flag: country.flag,
-        // mask: this.props.mask || country.mask, // Bilal: this is the original code
+        mask: this.props.mask || country.mask, // Bilal: this is the original code
         phoneNumber: '',
         selectedCountry:country
       };
-      if (!this.props.deviceRTL) { newState = { ...newState, mask: this.props.mask || country.mask }; } // Bilal
+      if (this.props.deviceRTL) { delete newState.mask; } 
       this.setState(newState);
       this.hideModal();
     } catch (err) {
@@ -100,11 +103,11 @@ export default class IntlPhoneInput extends React.Component {
       newState = {
         dialCode: defaultCountry.dialCode,
         flag: defaultCountry.flag,
-        // mask: this.props.mask || defaultCountry.mask, // Bilal: this is the original code
+        mask: this.props.mask || defaultCountry.mask, 
         phoneNumber: '',
         selectedCountry:defaultCountry
       };
-      if (!this.props.deviceRTL) { newState = { ...newState, mask: this.props.mask || defaultCountry.mask }; } // Bilal
+      if (this.props.deviceRTL) { delete newState.mask; } // Bilal: added this statement
       this.setState(newState);
     }
   }
@@ -149,26 +152,26 @@ export default class IntlPhoneInput extends React.Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={
               ({ item }) => {
-                // Bilal: For some reason if the Android device (not the app) has the default language set to an RTL language
-                //    the country code is displayed wrong (61+). Until we figure out this mysterious behaviour, I thought
-                //    we should swap the country code string if the device's default language is RTL.
-                //  If the property deviceRTL is NOT set (the developer does not add it to their code),
-                //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+                // Bilal: For some reason if an Android device/emulatr (not the app) has the default language set to an RTL language, e.g. Arabic,
+                //    the country code is displayed wrong (61+), instead of (+61). Until we figure out this mysterious behaviour, I thought
+                //    we should swap the country code string if the device's default direction is RTL.
+                //  If the property deviceRTL is NOT set (the developer does not add it to their code), the following code would NOT be applied.
+                //    This make this version downward compatible with older versions that does not have a deviceRTL property.
                 let dialCodeWithPlus = item.dialCode;
                 if (this.props.deviceRTL && item.dialCode.slice(0, 1) === "+") {
                   dialCodeWithPlus = item.dialCode.slice(1) + item.dialCode.slice(0, 1);
                 }
 
-                // Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag, country name & country code.
-                //  If the property appRTL is NOT set (the developer does not add it to their code),
-                //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+                // Bilal: If the app is in RTL mode (regardless of the device settings), we need to swap the horizontal display of the flag, country name & country code.
+                //  If the property deviceRTL is NOT set (the developer does not add it to their code), the following code would NOT be applied.
+                //    This make this version downward compatible with older versions that does not have a deviceRTL property.
                 const flagComponent = <Text style={[styles.modalFlagStyle, modalFlagStyle]}>{item.flag + " "}</Text>;
                 const countryCode = <Text style={[styles.modalCountryItemCountryNameStyle, modalCountryItemCountryNameStyle]}>{item[lang?.toLowerCase()??"en"]}</Text>
                 const countryName = <Text style={[styles.modalCountryItemCountryDialCodeStyle, modalCountryItemCountryDialCodeStyle]}>{dialCodeWithPlus}</Text>;
                 return (
                 <TouchableWithoutFeedback onPress={() => this.onCountryChange(item.code)}>
                   <View style={[styles.countryModalStyle, countryModalStyle]}>
-                    {/* Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code. */}
+                    {/* Bilal: If the app is in RTL mode (regardless of the device settings), we need to swap the horizontal display of the flag & country code. */}
                     {!this.props.appRTL && flagComponent}
                     <View style={styles.modalCountryItemContainer}>
                       {!this.props.appRTL && countryCode}
@@ -213,25 +216,26 @@ export default class IntlPhoneInput extends React.Component {
     } = this.props;
 
     const countryComponent = () => {
-      // Bilal: For some reason if the Android device (not the app) has the default language set to an RTL language
-      //    the country code is displayed wrong (61+). Until we figure out this mysterious behaviour, I thought
-      //    we should swap the country code string if the device's default language is RTL.
-      //  If the property deviceRTL is NOT set (the developer does not add it to their code),
-      //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+      // Bilal: For some reason if an Android device/emulatr (not the app) has the default language set to an RTL language, e.g. Arabic,
+      //    the country code is displayed wrong (61+), instead of (+61). Until we figure out this mysterious behaviour, I thought
+      //    we should swap the country code string if the device's default direction is RTL.
+      //  If the property deviceRTL is NOT set (the developer does not add it to their code), the following code would NOT be applied.
+      //    This make this version downward compatible with older versions that does not have a deviceRTL property.
       let dialCodeWithPlus = this.state.dialCode;
+      // Bilal: for some reason, the issue appears only if the user changed the country code. Hence, we check below this.state.countryCodeChanged
       if (this.props.deviceRTL && this.state.countryCodeChanged && dialCodeWithPlus.slice(0, 1) === "+") {
         dialCodeWithPlus = dialCodeWithPlus.slice(1) + dialCodeWithPlus.slice(0, 1);
       }
 
-      // Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code.
-      //  If the property appRTL is NOT set (the developer does not add it to their code),
-      //    it has the default value of false. This make this library's downward compatible with older versions that do not support RTL.
+      // Bilal: If the app is in RTL mode (regardless of the device settings), we need to swap the horizontal display of the flag & country code.
+      //  If the property deviceRTL is NOT set (the developer does not add it to their code), the following code would NOT be applied.
+      //    This make this version downward compatible with older versions that does not have a deviceRTL property.
       const flagComponent = <Text style={[styles.flagStyle, flagStyle]}>{flag + " "}</Text>;
       const countryCode = <Text style={[styles.dialCodeTextStyle, dialCodeTextStyle]}>{dialCodeWithPlus + " "}</Text>;
       return (
       <TouchableOpacity onPress={() => this.showModal()}>
         <View style={styles.openDialogView}>
-          {/* Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code. */}
+          {/* Bilal: If the app is in RTL mode (regardless of the device settings), we need to swap the horizontal display of the flag & country code. */}
           {!this.props.appRTL && flagComponent}
           {!this.props.appRTL && countryCode}
 
@@ -256,7 +260,7 @@ export default class IntlPhoneInput extends React.Component {
 
     return (
       <View style={{ ...styles.container, ...containerStyle }}>
-        {/* Bilal: If the app is in RTL mode, we need to swap the horizontal display of the flag & country code. */}
+        {/* Bilal: If the app is in RTL mode (regardless of the device settings), we need to swap the horizontal display of the flag & country code. */}
         {!this.props.appRTL && countryComponent()}
         {!this.props.appRTL && phoneInputComponent}
 
