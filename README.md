@@ -1,6 +1,8 @@
 # React-Native-INTL-Phone-Input
 It's an international phone input with phone mask. 
 
+IMPORTANT: This package is deprecated.
+
 ![](mgif.gif)
 
 
